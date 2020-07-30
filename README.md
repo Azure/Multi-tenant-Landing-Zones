@@ -1,3 +1,7 @@
+This repo will house an indevelopment solution for multi-tenant Azure landing zones. 
+
+Upon completion of the development and engineering review, this solution will likely be featured in the Cloud Adoption Framework as an Azure landing zone implementation option.
+In the meantime, please feel free to share feedback on the work-in-progress development or leverage the existing Azure Landing Zone implementation options: https://docs.microsoft.com/azure/cloud-adoption-framework/ready/landing-zone/implementation-options
 
 # Contributing
 
