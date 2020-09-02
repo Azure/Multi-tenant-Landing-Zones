@@ -3,7 +3,7 @@ This will require you to have understanding of git, installing software and how 
 
 For the setup - we will be using Github - but scripts used in workflows will work for Azure DevOps as well and steps can easily be modified for Azure DevOps. 
 
-## Prepare local dev machine & accounts
+## 1. Prepare local dev machine & accounts
 The following should be installed on your workstation:
 
  - VSCode
@@ -13,14 +13,14 @@ The following should be installed on your workstation:
  - Az CLI
  - Access to Azure subscription as a global admin
 
-## Prepare repository & Azure
+## 2. Prepare repository & Azure
 
 - Create a github account if you don't have one already
 - Fork this repository
 - Create a wiki for the newly forked project
 - Clone the two repositories on your local machine
 
-## Create storage account used for artifacts
+## 3. Create storage account used for artifacts
      
      cd .\src\platform-automation
      Add-Azaccount
@@ -147,18 +147,38 @@ cd src\platform-automation
 
 ## Expanding the Manifest
 
-You will now expand the Manifest. To help you along the way - we have created a few, very simple artifacts for you to build a management structure, do some operations and envision how you can roll out landing zones at scale. Remember - any ARM template can be an artifact and used in composing value. 
+You will now expand the Manifest - to include more useful features. To help you along the way - we have included a few, simple artifacts for you to build a management structure, do some operations and deploy some services and show how you can manage & deliver at scale. Remember - any ARM template can be an artifact and used in composing value. 
 
-- Create a management group structure 
+***NB: When running this on a management group or tenant deployment - you will need elevated privileges that you so far cannot have through Azure Lighthouse.***
+
+- Create a management group structure as shown by adding the artifacts in the manifest: 
+[![Wiki](../images/Management-Groups.png)](#)
+- Create a new branch 'feature/customer_contoso_change_1'
 - Move your subscription in under the 'platform' management group
-- Modify the lighthouse offer
-- Onboard a subscription to your lighthouse offer
+- Add the Lighthouse offer 'lighthouseManagedSubscription' and make sure you have updated the parameters to your management tenant. 
+- Test and deploy the updated manifest locally.
+- Verify that the subscription is now added to your management tenant. 
+- You can use the Build-DelegationList to list events on what customers have onboarded you, or you can verify this through the Azure Portal. 
+- Push your changes, do a pull request and merge the changes on master
+- Verify that the Deploy-Contoso workflow is running successully
 
+
+## Self-documenting Governance 
+A part have been added to automatically build and update each customer that is managed by code. If workflow have run - it should show you an overview of what have been provisioned and the current scanned governance structure for a customer as shown below:
 
 - Verify that the Contoso Governance workflow has run (** this workflow builds the details page for Contoso). There's a known limitation in the Mermaid toolkit that is known to hang - so be aware if the workflow executes for more than 10 minutes - you should kill it. 
 
+[![Wiki](../images/Contoso-details.png)](#)
 
-## Expand with the Sandbox-CAF-Foundation LandingZone
+## Subscription democratization
+Subscriptions can be automated and democratized in the same manner by triggering on git events. 
+
+To show a 'demo' on how this can be triggered :
+- Create a new file in 'cmdb\customers\contoso' called new_subscription - with content "Contoso Subscription1"
+- Commit and push this new file
+- Verify that the workflow have run successfully, it have triggered the script with the correct parameters and the output is a subscription
+
+***Note: This is just for demo - a partner/customer would implement and use PartnerCenter SDK in the Script demo, use the ARM deployment for new subscriptions or use the REST Apis to create subscriptions - depending on what lisencing model to use***
 
 ## Resources
 #### Creating workflows / Pipelines
