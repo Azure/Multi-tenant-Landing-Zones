@@ -5,21 +5,24 @@ In the meantime, please feel free to share feedback on the work-in-progress deve
 
 # Narrative
 
-Some companies have the need for multiple landing zones; support different lisencing models (EA, PAYG, CSP) and build, support and operate these landing zones across tenants. This is especially important for partners where different delivery models account for a big deal of their business. 
+Some companies have the need for multiple landing zones; support different lisencing models (EA, PAYG, CSP) and build, support and operate these landing zones across multiple tenants. This is especially important for partners where different delivery models account for a big deal of their business or enterprises that run seperated businesses within their enterprise and still require control and standardization. 
 
 # Design principles
- - Deploy from anywhere - only company approved landing zones (and solutions) 
- - Bootstrap any tenant and apply the operational models
- - Discover new subscriptions onboarded to operational model
- - Tenant as code (customers as code)
- - Native tooling and support cross platform, cross devops tooling
- - Testable and best practices
- - Subscriptions democratization through automation
+ - DevOps first approach and 'DevOps' tooling netural (Any toolchain)
+ - Native tooling and support cross platform
+ - Test and deploy from anywhere (pipelines, workflows, locally or on-site)
+ - Secure development and automated testing for best practices development
+ - Ability to approve landing zones (or solutions) for company wide use 
+ - Bootstrap any tenant and apply an operational model
+ - Discover new subscriptions and tenants that are onboarded to operational models
+ - Tenants as code (customers as code)
+ - Subscriptions democratization through automation (supporting multi-licensing models)
+
 
 # Multi-tenant landing zones and cross tenant deployments
 
 # Getting started
-
+ - Read instructions 
 
 # Solution
  - Build, test and verify artifacts
@@ -27,16 +30,17 @@ Some companies have the need for multiple landing zones; support different lisen
  - Create and validate manifests 
  - Deploy manifest 
  - Manage customers at scale (Lighthouse, customers as code ++)
+ - Discover customers
  - Tenants as code (self documenting, governance scanning)
 
 ## Extras
-These are 'demos' or features not fully implemented or standalone - to showcase various features of Azure DevOps / GitHub or how to scale from management, operations and deployment.
+These are 'demos' or features not fully implemented or standalone items, to showcase various features of Azure DevOps / GitHub or how to scale from management, operations and deployment.
 
 - Build-DelegationList.ps1 : This script outputs an array of objects with customer whom are onboarded or offboarded onto your lighthouse offer. This requires you to be logged in to your management tenant and have read access to the monitoring logs. Typically this would be used in a automation process (azure function or azure automation) on automate the customer process.
 
 - Export-Blueprints.ps1 - As a part of your company process you might have someone working with Azure Blueprints in staging tenant that you want to automate into your Git Repository to re-use across your customers/tenants. This script can be used as such an export - and run periodcally as part of a git workflow / pipeline.
 
-- Tests\Scripts\Deploy-Customers.tests.ps1 - This test file runs the PSScriptAnalyzer tests and checks for best practices in Powershell script file Deploy-Customer.ps1. Can be used as a best practices testing when creating deployment scripts and files. Should be embedded as a safe-guard when doing pull-requests.
+- Tests\Scripts\Deploy-Customers.tests.ps1 - This test file runs the PSScriptAnalyzer tests and checks for best practices in Powershell script file Deploy-Customer.ps1. Can be used as a best practices testing when creating deployment scripts and files. Should be embedded as a safe-guard when doing pull-requests and doing work on the actual deployment scripts themselves.
 
 - Tests\Templates.SVT.tests.ps1 - This set of tests runs the AzSK_ARMTemplateChecker (Azure Secure DevOpsKit) to verify that security best practices have been implemented in our artifacts. Can be used as a gate for secure development practices. 
 
