@@ -105,17 +105,57 @@ cd src\platform-automation
  - Verify that the Workflow Test-And-Upload-Dev-Artifacts are running succesfully.
  - From the Azure portal - check that you have gotten a new json file in your storage account targeted for 'dev'
  - Do a pull request onto master 
- - Verify that the Arm-TTK tests are running
+ - Verify that the Arm-TTK tests are running successfully
  - Merge the changes onto the master branch
  - Verify that the Publish-Artifacts-ToAzureStorage have run succesfully
  - Verify that you now have the template available in your production account ready for use.
 
-Congrats! You now have a succesful pipeline!
+Congrats! You now have a succesful pipeline to validate, approve and publish components for re-use!
 
 ## Create manifest and provision customer
- - Create a new folder under 'customers' called 'Contoso' 
- - Create a manifest.json under customers\contoso
- - Validate that this manifest is 'legal'
+We will now create a manifest that will be used to bootstrap a tenant (or customer). For the simplicity of this - we focus on the previous building block you created - but remember that deployments can happen on any scope (tenant, management group, subscription or resource group). 
+
+ - Create a new feature branch called 'feature\customer_contoso'
+ - Create a new folder under 'cmdb\customers' called 'contoso' 
+ - Create an empty manifest.json under cmdb\customers\contoso (see reference)
+ - Validate that this manifest is legal
+
+```
+# Powershell
+cd src\platform-automation
+.\tests\Artifacts.tests.ps1   
+```
+ - Update the settings in the manifest defaultDeploymentScope
+ - Test the deployment 
+
+ ```
+ cd src\platform-automation
+ # Run all deployments with -WhatIf
+.\platform-scripts\Deploy-Customer.ps1 -customer 'contoso' -Verbose -DryRun
+# Run the manifest with the current session - this will create and update Azure Resources
+.\platform-scripts\Deploy-Customer.ps1 -customer 'contoso' -Verbose 
+ ```
+ - Commit and push the change to your feature branch
+ - Verify that the workflow "Update wiki" is running successfully and building the wiki pages for your managed customers. You should be seeing something similar to this:
+
+ [![Wiki](../images/Wiki-main.png)](#)
+
+ - Click on the customers and you should be seeing Contoso listed as one of your customers managed as code:
+ [![Wiki](../images/Customers-Overview.png)](#)
+
+ - Do a pull request onto master and merge this request. Verify that the workflow "Deploy-Contoso" runs. This workflow will run anytime anyone have approved changes to be rolled out for Contoso.
+
+## Expanding the Manifest
+
+You will now expand the Manifest. To help you along the way - we have created a few, very simple artifacts for you to build a management structure, do some operations and envision how you can roll out landing zones at scale. Remember - any ARM template can be an artifact and used in composing value. 
+
+- Create a management group structure 
+- Move your subscription in under the 'platform' management group
+- Modify the lighthouse offer
+- Onboard a subscription to your lighthouse offer
+
+
+- Verify that the Contoso Governance workflow has run (** this workflow builds the details page for Contoso). There's a known limitation in the Mermaid toolkit that is known to hang - so be aware if the workflow executes for more than 10 minutes - you should kill it. 
 
 
 ## Expand with the Sandbox-CAF-Foundation LandingZone
