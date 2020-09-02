@@ -21,6 +21,7 @@ The following should be installed on your workstation:
 - Clone the two repositories on your local machine
 
 ## Create storage account used for artifacts
+All the artifacts defined in the artifacts repo will be published in a storage account. All the customer deployments will use that storage account to access the templates/definitions that need to be deployed. 
      
      cd .\src\platform-automation
      Add-Azaccount
@@ -28,21 +29,34 @@ The following should be installed on your workstation:
         $rg = new-AzResourceGroup -resourcegroupname "rg-$($_)-automation"-location 'west europe'
         $deploy = new-azresourcegroupdeployment -resourcegroup $rg.ResourceGroupName -templateFile .\artifacts\templates\resourcegroup\Storage-Account.json -storageAccountNamePrefix 'devops' -verbose
         # Output names & key     
-        Write-Output "$($_) = "
-        $deploy.outputs.storageAccountName.value     
+        Write-Output "$($_) storage account name: "
+        $deploy.outputs.storageAccountName.value 
+        Write-Output "$($_) storage masterKey: "    
         $deploy.outputs.masterKey.value
      }
 
-***Copy the value for storageAccount and masterKey***  - you will need them for Github secrets. 
+***Copy these value for storageAccount and masterKey*** as these will be stored as ***secrets*** in Github and used by the pipelines to publish the artifacts & do the deployments. 
 
-## Update secrets and variables (Github)
- - Update the workflows 
+## Create secrets and update variables (Github)
+1. Create secrets
+- On GitHub, navigate to the main page of the repository. 
+- Under your repository name, click on the "Settings" tab. 
+- In the left sidebar, click Secrets. 
+- On the right bar, click on "Add a new secret"  
+
+[![Create Github secret](../images/secret.png)](#)
+
+- Add two github secrets: AZURE_DEPLOYMENT_STORAGE_SAS_DEV and AZURE_DEPLOYMENT_STORAGE_SAS_PROD with the respective masterKey values
+
+2. Update the workflows 
 
 Replace the value for storageAccountName and paste your value for the following workflows:
 
-    - 
+    - Deploy-All-Customers
+    - Deploy-Contoso
+    - Deploy-Fabrikam
 
- - Add two github secrets 
+- Add two github secrets 
     - Secretname: AZURE_DEPLOYMENT_STORAGE_SAS_DEV and AZURE_DEPLOYMENT_STORAGE_SAS_PROD with the respective masterKey values
 
 ## Create SPN and add as secret to Github (actions)
@@ -53,6 +67,8 @@ Instructions for how to create an SPN for deployments in customer tenant.
 From Azure CLI:
 
     az ad sp create-for-rbac --name "DevOpsGlobalAdmin" --role 'Owner' --sdk-auth
+
+    As a recommendation, include the SPN in the Lighthouse offer for your customers. In this way, the SPN will have access to all the delegated resources and can be used to do the deployments across multiple customers at once, with one identity access. 
 
     You might want to give this SPN User Access Administrator as well to elevate privileges for certain deployments
     You can achieve this by elevating the User Access Administrator and Owner to root level. 
@@ -74,7 +90,7 @@ From Azure CLI:
         "galleryEndpointUrl": "https://gallery.azure.com/",
         "managementEndpointUrl": "https://management.core.windows.net/"
     }
-Copy and paste the entire json string                   
+Copy the entire json string as this will be stored as a secret in Github.                 
 
 ### Create secret for customer deployment
 Create a secret called AZURE_SUBSCRIPTION_CREDENTIAL and paste the value from previous step.
@@ -87,13 +103,14 @@ Repeat the 2 last steps - but create the Lighthouse SPN that you will use for au
 
 ## Build your first repeatable building block 
 
-For this exercise - we will focus on secure development practices and building repeatable concepts that you can later deploy. At this point you will not be creating a fully fledged Landing Zone. 
+For this exercise - we will focus on secure development practices and building repeatable concepts that you can later deploy. 
+At this point you will not be creating a fully fledged Landing Zone, but adding an artifact (in this example: a WebApp), validating and testing it, before adding it to a storage account. It will be used and deployed later to customers.   
 
  - Create a seperate branch called 'feature/lz-1'
- - Create your first template under artifacts\templates\resourcegroup\WebApp.json
+ - Create your first template under artifacts\templates\resourcegroup\LogicApp.json
  - Make sure this is an empty ARM template
  - Validate that the template is valid (Test-AzResourceGroupDeployment)
- - Validate that the template follows the company best practices
+ - Validate that the template follows the company best practices. Templates.tests.ps1 checks that all files in artifacts/templates are a valid JSON file and content
 
 ```
 # Powershell
@@ -103,7 +120,7 @@ cd src\platform-automation
  - Fix potential errors before commiting the file
  - Commit and push your change
  - Verify that the Workflow Test-And-Upload-Dev-Artifacts are running succesfully.
- - From the Azure portal - check that you have gotten a new json file in your storage account targeted for 'dev'
+ - From the Azure portal - check that you have a new json file in your storage account targeted for 'dev'
  - Do a pull request onto master 
  - Verify that the Arm-TTK tests are running
  - Merge the changes onto the master branch
