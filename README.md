@@ -5,7 +5,9 @@ In the meantime, please feel free to share feedback on the work-in-progress deve
 
 # Narrative
 
-Some companies have the need for multiple landing zones; support different lisencing models (EA, PAYG, CSP) and build, support and operate these landing zones across multiple tenants. This is especially important for partners where different delivery models account for a big deal of their business or enterprises that run seperated businesses within their enterprise and still require control and standardization. 
+Some companies have the need for multiple landing zones; support different lisencing models (EA, PAYG, CSP) and build, support and operate these landing zones across multiple tenants. This is especially important for partners where different delivery models account for a big deal of their business or enterprises that run seperated businesses within their enterprise and still require control and standardization.
+
+This solution is not opinionated on the architecture you choose to deliver or how to. If we look at Enterprise Scale - this would be one out of many landing zones a company would support and be able to deliver at scale.
 
 # Design principles
  - DevOps first approach and 'DevOps' tooling netural (Any toolchain)
@@ -18,6 +20,16 @@ Some companies have the need for multiple landing zones; support different lisen
  - Tenants as code (customers as code)
  - Subscriptions democratization through automation (supporting multi-licensing models)
 
+# Building blocks 
+
+These are the central building blocks used to create the delivery mechanism used to scale:
+
+ - Git (including branching, reviews ++)
+ - PowerShell Core (including AZ Modules)
+ - Azure Resource Manager (ARM)
+ - Azure Storage (Delivery mechanism, idempotent and for staging)
+ - Arm TTK
+ - Azure Lighthouse
 
 # Multi-tenant landing zones and cross tenant deployments
 
@@ -32,6 +44,8 @@ Some companies have the need for multiple landing zones; support different lisen
  - Manage customers at scale (Lighthouse, customers as code ++)
  - Discover customers
  - Tenants as code (self documenting, governance scanning)
+
+## How it works
 
 ## Extras
 These are 'demos' or features not fully implemented or standalone items, to showcase various features of Azure DevOps / GitHub or how to scale from management, operations and deployment.

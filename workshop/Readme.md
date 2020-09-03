@@ -11,6 +11,7 @@ The following should be installed on your workstation:
  - PowerShell Core
  - Az Module
  - Az CLI
+ - Arm ttk module
  - Access to Azure subscription as a global admin
 
 ## 2. Prepare repository & Azure
@@ -118,6 +119,7 @@ cd src\platform-automation
 .\tests\Templates.tests.ps1   
 ```
  - Fix potential errors before commiting the file
+ - Test the template using Arm ttk locally (Test-AzTemplate)
  - Commit and push your change
  - Verify that the Workflow Test-And-Upload-Dev-Artifacts are running succesfully.
  - From the Azure portal - check that you have a new json file in your storage account targeted for 'dev'
