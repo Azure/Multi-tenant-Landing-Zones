@@ -1,0 +1,50 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "actionGroupName": {
+            "value": "ITSMGroup"
+        },
+        "actionGroupShortName": {
+            "value": "ITSMGroup"
+        },
+        "emailReceivers": {
+            "value": []
+        },
+        "smsReceivers": {
+            "value": []
+        },
+        "webhookReceivers": {
+            "value": []
+        },
+        "itsmReceivers": {
+            "value": [
+                {
+                    "name": "itsmReceiver",
+                    "workspaceId": "GEN-UNIQUE-20",
+                    "connectionId": "1234567890",
+                    "ticketConfiguration": "1234567890",
+                    "region": "eastus"
+                }
+            ]
+        },
+        "azureAppPushReceivers": {
+            "value": []
+        },
+        "automationRunbookReceivers": {
+            "value": []
+        },
+        "voiceReceivers": {
+            "value": []
+        },
+        "logicAppReceivers": {
+            "value": []
+        },
+        "azureFunctionReceivers": {
+            "value": []
+        },
+        "armRoleReceivers": {
+            "value": []
+        }
+    }
+}

@@ -1,0 +1,24 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "mspOfferName": {
+            "value": "NerdsOfNorway"
+        },
+        "mspOfferDescription": {
+            "value": "This is the ultimate MSP"
+        },
+        "managedByTenantId": {
+            "value": "<Managed_BY_Tenant_ID>"
+        },
+        "authorizations": {
+            "value": [
+                {
+                    "principalId": "<Identity_Object_ID>",
+                    "principalIdDisplayName": "Tier 1 Support",
+                    "roleDefinitionId": "b24988ac-6180-42a0-ab88-20f7382dd24c"
+                }               
+            ]
+        }
+    }
+}

@@ -1,0 +1,35 @@
+{
+    "artifacts": {
+        "tenant": {
+            "BU": {
+                "name": "ManagementGroups",
+                "version": "1.0"
+            }
+        },
+        "managementGroups": {
+            "defaultMgmntGroupPolicies": {
+                "name": "DefaultPoliciesWithAssignment",
+                "version": "1.0",
+                "scope": {
+                    "id": "Marketing",
+                    "name": "Marketing"
+                }
+            }
+        },
+        "subscriptions": {
+        },
+        "resourceGroups": {
+            "SimpleStorage1": {
+                "name": "StorageAccount",
+                "version": "1.0"
+            }
+        },
+        "blueprints": {}
+    },
+    "defaultDeploymentScope": {
+        "tenantId": "<Tenant_ID>",
+        "subscription": "<Subscription_ID>",
+        "location": "west europe",
+        "meta": "Trigger update"
+    }
+}

@@ -1,0 +1,26 @@
+{
+    "artifacts": {
+        "tenant": {},
+        "managementGroups": {},
+        "subscriptions": {},
+        "resourceGroups": {},
+        "blueprints": {
+            "assign": {
+                "name": "Sample-blueprint",
+                "version": "1.0",
+                "scope": {
+                    "managementGroupID": "",
+                    "subscription": "bc74a211-7bca-4358-aa0a-6dc6086c8f16"
+                }
+            }
+        }
+    },
+
+    "defaultDeploymentScope": {
+        "tenantId": "<Tenant_ID>",
+        "subscription": "<Subscription_ID>",
+        "location": "west europe",
+        "meta": "Trigger update4"
+    }
+    
+}

@@ -1,0 +1,19 @@
+{
+    "artifacts":{     
+        "tenant" : {}, 
+        "managementGroups" : {},
+        "subscriptions" : {
+            "DefaultOffer" : { "name" : "LighthouseOfferManagedSubscription", "version": "1.0" }
+        }, 
+        "resourceGroups" : {},
+        "blueprints" : {
+
+        }
+    },    
+    "defaultDeploymentScope" : {
+        "tenantId": "<Tenant_ID>",
+        "subscription": "<Subscription_ID>",
+        "location" : "west europe",
+        "meta" : "Trigger update"
+    }
+}

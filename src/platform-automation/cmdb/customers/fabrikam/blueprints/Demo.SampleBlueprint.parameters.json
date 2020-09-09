@@ -1,0 +1,27 @@
+{
+    "identity": {
+        "type": "SystemAssigned"
+    },
+    "location": "westeurope",
+    "properties": {
+        "description": "Assignment of Sample blueprint",
+        "blueprintId": "",
+        "locks": {
+            "mode": "None"
+        },
+        "parameters": {
+            "rg_name": {
+                "value": "DemoRgBp"
+            },
+            "arm_location": {
+                "value": "westeurope"
+            },
+            "allowedlocations_listOfAllowedLocations": {
+                "value": [
+                    "westeurope"
+                ]
+            }
+        },
+        "resourceGroups": {}
+    }
+}

@@ -1,0 +1,56 @@
+{
+    "identity": {
+        "type": "SystemAssigned"
+    },
+    "location": "westeurope",
+    "properties": {
+        "description": "Assignment of CAF Foundation blueprint",
+        "blueprintId": "",
+        "locks": {
+            "mode": "None"
+        },
+        "parameters": {
+            "Policy_CostCenter_Tag": {
+                "value": "IT"
+            },
+            "Policy_Allowed-Locations": {
+                "value": [
+                    "westeurope"
+                ]
+            },
+            "Policy_Resource-Types-DENY": {
+                "value": [
+                    "Microsoft.Network/expressRouteCircuits"
+                ]
+            },
+            "Policy_Allowed-StorageAccount-SKUs": {
+                "value": [
+                    "Standard_LRS",
+                    "Standard_GRS"
+                ]
+            },
+            "Policy_Allowed-VM-SKUs": {
+                "value": [
+                    "Standard_DS1_v2",
+                    "Standard_F2s_v2"
+                ]
+            },
+            "Organization_Name": {
+                "value": "Fabrikam"
+            },
+            "KV-AccessPolicy": {
+                "value": "a2aa9476-49b7-498d-a049-d296c296faf6"
+            },
+            "LogAnalytics_DataRetention": {
+                "value": 30
+            },
+            "LogAnalytics_Location": {
+                "value": "North Europe"
+            },
+            "AzureRegion": {
+                "value": "westeurope"
+            }
+        },
+        "resourceGroups": {}
+    }
+}
