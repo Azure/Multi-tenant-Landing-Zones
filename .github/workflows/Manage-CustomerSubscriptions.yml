@@ -1,0 +1,53 @@
+name: Manage CSP Customer subscriptions
+on:       
+    push:
+      branches:
+          - master
+      paths:
+          - src/platform-automation/cmdb/customers/**/new_subscription
+          - src/platform-automation/cmdb/customers/**/delete_subscription
+
+env:  
+  partnerCenterCredential: ${{ secrets.AZURE_CONTOSO_CREDENTIAL }}
+
+defaults: 
+  run:
+    shell: pwsh
+          
+jobs:
+  manage-subscriptions:
+    name: Manage subscriptions for customers
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2          
+    - name: Login to Azure with Powershell
+      run: ./src/platform-automation/platform-scripts/Login-WithSecretString.ps1 -secretJson '${{ env.partnerCenterCredential }}' -verbose         
+    - name: Install Azure resource graph and partner center SDK
+      run: |
+          Install-Module -Name Az.ResourceGraph -Force
+          Install-Module -Name PartnerCenter -Force;
+    - name: get changed files
+      id: getfile
+      run: |
+        echo "::set-output name=files::$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} | grep -e '.*new_subscription$' -e '.*delete_subscription$' | xargs)"    
+    - name: Run the correct management scripts for the change
+      run: | 
+        # $files = ${{ steps.getfile.outputs.files }}
+        $new_files = Get-ChildItem -Path ./src/platform-automation/cmdb/customers -recurse -filter new_subscription
+        $deleted_files = Get-ChildItem -Path ./src/platform-automation/cmdb/customers -recurse -filter deleted_subscription;
+        $new_files|Foreach-object {
+           ./src/platform-automation/platform-scripts/New-CustomerSubscription.ps1 -subscriptionFile $_.Fullname -Verbose
+        }
+        # Could output subscriptions to customer file and auto-commit that
+    - name: Commit changes
+      run: |        
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add .
+        git commit -m "Updated subscription files"
+    - name: Push changes to wiki repo
+      uses: ad-m/github-push-action@master
+      with:
+        repository: ${{github.repository}}
+        github_token: ${{ secrets.GITHUB_TOKEN }}      

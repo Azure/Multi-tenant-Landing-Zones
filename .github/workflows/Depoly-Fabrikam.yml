@@ -1,0 +1,32 @@
+name: Customer deployment Fabrikam
+on:   
+  pull_request:
+    types: [closed]
+    branches:
+      - master
+    paths:
+      - src/platform-automation/cmdb/customers/fabrikam/*
+
+env:
+  storageAccountName: ${{ secrets.AZURE_STORAGE_ACCOUNT_PROD }}
+  storageAccountKey: ${{ secrets. AZURE_DEPLOYMENT_STORAGE_SAS_PROD }}
+  customerDeploymentCredential: ${{ secrets.AZURE_FABRIKAM_CREDENTIAL }}
+
+defaults: 
+  run:
+    shell: pwsh
+          
+jobs:
+  deploy-customer:
+    name: Deploy Fabrikam with all it's glory
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1     
+    - name: Login to Azure with Powershell
+      run: ./src/platform-automation/platform-scripts/Login-WithSecretString.ps1 -secretJson '${{ env.customerDeploymentCredential }}' -verbose         
+
+    - name: Run deployment with verbose output
+      run: ./src/platform-automation/platform-scripts/Deploy-Customer.ps1 -customer "fabrikam"  -storageAccountName '${{ env.storageAccountName }}' -storageAccountKey '${{ env.storageAccountKey }}' -verbose         
+      

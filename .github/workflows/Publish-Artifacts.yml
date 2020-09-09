@@ -1,0 +1,40 @@
+name: Publish artifacts to workflow
+on: 
+  push:
+    paths:
+      - src/platform-automation/artifacts
+#    paths-ignore:
+#      - 'docs/**'
+
+jobs:
+  create-artifacts:
+    name: Create artifacts for re-use
+    runs-on: ubuntu-latest
+    steps:    
+    - name: Checkout
+      uses: actions/checkout@v1    
+    - name: Create blueprints artifacts
+      uses: actions/upload-artifact@v1
+      with:
+        name: Blueprints
+        path: ./src/platform-automation/artifacts/blueprints
+    - name: Create Desired state configuration artifacts
+      uses: actions/upload-artifact@v1
+      with:
+        name: dsc
+        path: ./src/platform-automation/artifacts/dsc
+    - name: Create pipelines artifact
+      uses: actions/upload-artifact@v1
+      with:
+        name: pipelines
+        path: ./src/platform-automation/artifacts/pipelines
+    - name: Create scripts
+      uses: actions/upload-artifact@v1
+      with:
+        name: scripts
+        path: ./src/platform-automation/artifacts/scripts      
+    - name: Create all templates in one artifact
+      uses: actions/upload-artifact@v1
+      with:
+        name: templates
+        path: ./src/platform-automation/artifacts/templates

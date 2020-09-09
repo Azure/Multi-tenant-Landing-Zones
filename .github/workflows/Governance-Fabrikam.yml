@@ -1,0 +1,71 @@
+name: Governance visualizer for fabrikam
+on:   
+  pull_request:
+    types: [closed]
+    branches:
+      - master
+    paths:
+      - src/platform-automation/cmdb/customers/fabrikam/*
+
+env:
+  ManagementGroupId: IT
+  OutputPath: wiki/customers/fabrikam/governance-scan/
+  MermaidFile: wiki/customers/fabrikam/governance-scan/AzGovViz_IT.md
+  CsvDelimiter: ;
+  Repository: wikiRepo
+  customerDeploymentCredential: ${{ secrets.AZURE_FABRIKAM_CREDENTIAL }}
+
+defaults: 
+  run:
+    shell: pwsh
+          
+jobs:
+  build-customer:
+    name: Scan Fabrikam for Governance changes
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2    
+      with:
+        path: main
+    - uses: actions/checkout@v2
+      with:
+        repository: ${{github.repository}}.wiki    # specify the wiki repo name here.
+        path: wiki
+    - name: Login to Azure with Powershell
+      run: ./main/src/platform-automation/platform-scripts/Login-WithSecretString.ps1 -secretJson '${{ env.customerDeploymentCredential }}' -verbose         
+    - name: Install Azure resource graph
+      run: |
+          Install-Module -Name Az.ResourceGraph -Force
+          if(!(Test-Path '${{ env.OutputPath }}')){
+             new-item -itemtype directory '${{ env.OutputPath }}' -Force
+          }
+    # - name: Run AZGovViz with parameters for this customer
+    #   run: ./main/src/platform-automation/platform-scripts/AzGovViz.ps1 -ManagementGroupId ${{ env.ManagementGroupId }} -OutputPath '${{ env.OutputPath }}' -CsvDelimiter "${{ env.CsvDelimiter }}" -AzureDevOpsWikiAsCode -ErrorAction SilentlyContinue -Verbose
+    - name: Compile mermaid
+      uses: neenjaw/compile-mermaid-markdown-action@master
+      with:
+        files: ${{ env.MermaidFile }}
+        output: ${{ env.OutputPath }}
+      env:
+        HIDE_CODEBLOCKS: 1
+        ABSOLUTE_IMAGE_LINKS: 0
+    - name: show changes
+      run: |
+        cd wiki
+        git status
+        cd ..
+    - name: Commit files
+      run: |
+        cd wiki
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add .
+        git commit -m "Updated governance wiki"
+    - name: Push changes to wiki repo
+      uses: ad-m/github-push-action@master
+      with:
+        directory: wiki
+        repository: ${{github.repository}}.wiki    # specify the wiki repo and push the update.
+        github_token: ${{ secrets.GITHUB_TOKEN }}

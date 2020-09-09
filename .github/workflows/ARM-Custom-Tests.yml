@@ -1,0 +1,31 @@
+name: ARM - Custom Tests Nunit
+on:
+  push:
+    paths:
+      - src/platform-automation/artifacts/**
+
+env:
+  testRunner: ./src/platform-automation/tests/Templates.tests.ps1
+  testResultsFile: TestResults.Pester.xml
+  tempFolder: ../_temp
+
+defaults: 
+  run:
+    shell: pwsh
+
+jobs:
+  test_arm_templates:
+    runs-on: ubuntu-latest
+    name: Run Custom tests with Nunit
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Run ARM Tests
+        run: |
+          $results = ./src/platform-automation/platform-scripts/Run-Tests.ps1 -testName 'ValidateTemplates' -testScriptToRun '${{env.testRunner}}' -testResultsFile '${{env.testResultsFile}}' -verbose        
+          if($results.FailedCount -gt 0){
+              Write-Output 'There are failed tests - breaking build now'
+              $failedResults = $results.TestResult|? Result -eq Failed              
+              $failedResults;
+              exit 1;
+          }

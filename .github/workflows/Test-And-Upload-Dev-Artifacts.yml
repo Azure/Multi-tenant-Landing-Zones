@@ -1,0 +1,51 @@
+name: Dev - Verify and publish artifacts to Azure Storage
+on:
+  push:
+    branches-ignore:
+      - master
+    paths:
+      - src/platform-automation/artifacts/**
+
+defaults: 
+  run:
+    shell: pwsh
+
+env:
+  storageAccountName: ${{ secrets.AZURE_STORAGE_ACCOUNT_DEV }}
+  storageAccountKey: ${{ secrets. AZURE_DEPLOYMENT_STORAGE_SAS_DEV }}
+  artifactsVersion: "1.0"
+  artifactsSrcFolder: ./src/platform-automation/artifacts  
+  deploymentAutomationCredential: ${{ secrets.AZURE_SUBSCRIPTION_CREDENTIAL }}
+
+jobs:
+  test_arm_templates:
+    runs-on: ubuntu-latest
+    name: Run artifacts tests for all customers
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Run artifacts test                
+        run: | 
+          Find-Module Pester|Install-Module -Scope CurrentUser -Force
+          Import-module Pester
+          ./src/platform-automation/tests/Artifacts.tests.ps1
+
+  build-and-deploy:
+    needs: test_arm_templates
+    runs-on: ubuntu-latest
+    # strategy:
+      # matrix:
+      #   artifacts: ['blueprints','dsc','scripts','workbooks','templates']
+    
+      # fail-fast: true
+    steps:    
+    - name: Checkout
+      uses: actions/checkout@v1    
+    - name: Login to Azure with Powershell
+      run: ./src/platform-automation/platform-scripts/Login-WithSecretString.ps1 -secretJson '${{ env.deploymentAutomationCredential }}' -verbose         
+    - name: Prepare for artifact upload
+      run: |
+        Write-Output 'StorageAccount : ${{ env.storageAccountName }} Preparing artifacts and uploading artifacts from ${{ env.artifactsSrcPath }}'
+    - name: Run upload artifacts script
+      run: ./src/platform-automation/platform-scripts/Upload-Artifacts.ps1 -storageAccountName '${{ env.storageAccountName }}' -storageAccountKey '${{ env.storageAccountKey }}' -version '${{ env.artifactsVersion }}' -artifactsPath '${{ env.artifactsSrcFolder }}' -verbose
+    
