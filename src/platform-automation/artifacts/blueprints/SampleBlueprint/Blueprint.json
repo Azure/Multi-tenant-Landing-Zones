@@ -1,0 +1,54 @@
+{
+  "properties": {
+    "targetScope": "subscription",
+    "parameters": {
+      "arm_storageAccountType": {
+        "type": "string",
+        "metadata": {
+          "displayName": "storageAccountType (arm)",
+          "description": "Storage Account type"
+        },
+        "defaultValue": "Standard_LRS",
+        "allowedValues": [
+          "Standard_LRS",
+          "Standard_GRS",
+          "Standard_ZRS",
+          "Premium_LRS"
+        ]
+      },
+      "rg_name": {
+        "type": "string",
+        "metadata": {
+          "displayName": "location resource group"
+        },
+        "allowedValues": []
+      },
+      "arm_location": {
+        "type": "string",
+        "metadata": {
+          "displayName": "location (arm)",
+          "description": "Location for all resources."
+        },
+        "allowedValues": []
+      },
+      "allowedlocations_listOfAllowedLocations": {
+        "type": "array",
+        "metadata": {
+          "displayName": "Allowed locations (Policy: Allowed locations)",
+          "strongType": "location"
+        },
+        "allowedValues": []
+      }
+    },
+    "resourceGroups": {
+      "ResourceGroup": {
+        "location": "westeurope",
+        "name": "[parameters('rg_name')]",
+        "metadata": {
+          "displayName": "rg"
+        },
+        "dependsOn": []
+      }
+    }
+  }
+}

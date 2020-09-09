@@ -1,0 +1,104 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2014-04-01-preview/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "workspaceName": {
+            "type": "String",
+            "metadata": {
+                "description": "Specifies the name of the workspace."
+            }
+        },
+        "data-retention": {
+            "type": "int",
+            "defaultValue": 365,
+            "minValue": 30,
+            "maxValue": 365,
+            "metadata": {
+                "displayName": "Log retention in days",
+                "description": "Number of days data will be retained for"
+            }
+        },
+        "sku": {
+            "type": "string",
+            "allowedValues": [
+                "pergb2018",
+                "Free",
+                "Standalone",
+                "PerNode",
+                "Standard",
+                "Premium"
+            ],
+            "defaultValue": "pergb2018",
+            "metadata": {
+                "description": "Pricing tier: PerGB2018 or legacy tiers (Free, Standalone, PerNode, Standard or Premium) which are not available to all customers."
+            }
+        },
+        "location": {
+            "type": "String",
+            "allowedValues": [
+                "australiacentral",
+                "australiaeast",
+                "australiasoutheast",
+                "brazilsouth",
+                "canadacentral",
+                "centralindia",
+                "centralus",
+                "eastasia",
+                "eastus",
+                "eastus2",
+                "francecentral",
+                "japaneast",
+                "koreacentral",
+                "northcentralus",
+                "northeurope",
+                "southafricanorth",
+                "southcentralus",
+                "southeastasia",
+                "uksouth",
+                "ukwest",
+                "westcentralus",
+                "westeurope",
+                "westus",
+                "westus2"
+            ],
+            "metadata": {
+                "description": "Specifies the location in which to create the workspace."
+            }
+        }
+    },
+    "variables": {
+
+    },
+    "resources": [
+        {
+            "type": "Microsoft.OperationalInsights/workspaces",
+            "name": "[parameters('workspaceName')]",
+            "apiVersion": "2017-03-15-preview",
+            "location": "[parameters('location')]",
+            "properties": {
+                "sku": {
+                    "name": "[parameters('sku')]"
+                },
+                "retentionInDays": "[parameters('data-retention')]",
+                "features": {
+                    "searchVersion": 1,
+                    "legacy": 0,
+                    "enableLogAccessUsingOnlyResourcePermissions": true
+                }
+            }
+        },
+        {
+            "type": "Microsoft.OperationalInsights/workspaces/providers/locks",
+            "apiVersion": "2016-09-01",
+            "name": "[concat(parameters('workspaceName'), '/Microsoft.Authorization/logAnalyticsDoNotDelete')]",
+            "dependsOn": [
+                "[parameters('workspaceName')]"
+            ],
+            "comments": "Resource lock on Log Analytics",
+            "properties": {
+                "level": "CannotDelete"
+            }
+        }
+    ],
+    "outputs": {}
+}

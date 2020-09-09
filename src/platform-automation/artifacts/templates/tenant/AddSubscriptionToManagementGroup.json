@@ -1,0 +1,51 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-08-01/tenantDeploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "managementGroup": {
+      "type": "string",
+      "defaultValue": "Platform"      
+    },
+    "subscriptionId":  {
+      "type": "string",
+      "minLength": 36
+    },
+    
+    "subscriptionName": {
+      "type": "string",
+      "defaultValue": "Customer_MSDN",
+      "minLength": 1
+    }
+  },
+  "variables": {
+    "subId" : "[resourceId('Microsoft.Management/managementGroups', parameters('managementGroup'))]",
+    "managementGroupId" : "[resourceId('Microsoft.Management/managementGroups', parameters('managementGroup'))]"   
+  },
+  "resources": [   
+     {
+      "type": "Microsoft.Management/managementGroups",
+      "apiVersion": "2019-11-01",
+      "name": "[parameters('managementGroup')]",      
+      "properties": {
+        
+      },
+      "resources": [
+        {
+          "type": "subscriptions",
+          "apiVersion" : "2019-11-01",
+          "id": "[concat(resourceId('Microsoft.Management/managementGroups', parameters('managementGroup')), '/subscriptions/', parameters('subscriptionId'))]",
+          "name" : "[parameters('subscriptionId')]",                    
+          "properties": {
+              "displayName" : "[parameters('subscriptionName')]"              
+          },
+          "dependsOn": [
+            "[resourceId('Microsoft.Management/managementGroups', parameters('managementGroup'))]"
+          ]
+        }
+      ]
+    }
+  ],
+  "outputs":{
+    
+  }
+}
