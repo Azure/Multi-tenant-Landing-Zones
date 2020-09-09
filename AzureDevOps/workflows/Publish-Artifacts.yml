@@ -1,0 +1,142 @@
+trigger:
+- master
+
+stages:
+  - stage: buildArtifacts
+    displayName: create artifacts
+    variables:
+      artifactsDirectory : "$(Build.ArtifactStagingDirectory)"
+      bluePrintsFolder : "$(Build.ArtifactStagingDirectory)/Blueprints"
+      dscFolder : "$(Build.ArtifactStagingDirectory)/Dsc"
+      pipelinesFolder : "$(Build.ArtifactStagingDirectory)/Pipelines"
+      scriptsFolder : "$(Build.ArtifactStagingDirectory)/Scripts"
+      mgTemplatesFolder: "$(Build.ArtifactStagingDirectory)/MgTemplates"
+      rgTemplatesFolder: "$(Build.ArtifactStagingDirectory)/RgTemplates"
+      subscriptionTemplatesFolder: "$(Build.ArtifactStagingDirectory)/subscriptionTemplates"
+      tenantTemplatesFolder: "$(Build.ArtifactStagingDirectory)/tenantTemplates"
+      templateFolder : "$(Build.ArtifactStagingDirectory)/Templates"     
+
+      blueprintArtifactName : "Blueprints"
+      dscArtifactName : "Dsc"
+      pipelinesArtifactName : "Pipelines"
+      scriptsArtifactName : "Scripts"
+      mgTemplatesArtifactName : "ManagementGroup"
+      rgTemplatesArtifactName : "ResourceGroup"
+      subscriptionTemplatesArtifactName : "Subscription"
+      tenantTemplatesArtifactName : "Tenant"
+      templatesArtifactName : "Templates"
+
+    jobs:
+      - job: buildAndAssembleArtifacts
+        steps:
+          - pwsh: |
+              new-item -itemType Directory $(bluePrintsFolder) -force
+              new-item -itemType Directory $(dscFolder) -force
+              new-item -itemType Directory $(pipelinesFolder) -force      
+              new-item -itemType Directory $(scriptsFolder) -force
+              new-item -itemType Directory $(mgTemplatesFolder) -force   
+              new-item -itemType Directory $(rgTemplatesFolder) -force   
+              new-item -itemType Directory $(subscriptionTemplatesFolder) -force
+              new-item -itemType Directory $(tenantTemplatesFolder) -force          
+              new-item -itemType Directory $(templateFolder) -force
+
+            displayName: Create folders and prep artifacts
+            enabled: true
+          - task: CopyFiles@2
+            displayName: "Copy blueprints"
+            inputs:
+              sourceFolder: "$(Build.SourcesDirectory)/src/platform-automation/artifacts/blueprints"
+              contents: "**" 
+              targetFolder: "$(blueprintsFolder)"      
+          - task: PublishBuildArtifacts@1
+            inputs:
+              pathToPublish: $(blueprintsFolder)
+              artifactName: $(blueprintArtifactName)
+
+          - task: CopyFiles@2
+            displayName: "Copy DSC"
+            inputs:
+              sourceFolder: "$(Build.SourcesDirectory)/src/platform-automation/artifacts/dsc"
+              contents: "**" 
+              targetFolder: "$(dscFolder)"          
+          - task: PublishBuildArtifacts@1
+            inputs:
+              pathToPublish: $(dscFolder)
+              artifactName: $(dscArtifactName)
+  
+          - task: CopyFiles@2
+            displayName: "Copy pipelines"
+            inputs:
+              sourceFolder: "$(Build.SourcesDirectory)/src/platform-automation/artifacts/pipelines"
+              contents: "**" 
+              targetFolder: "$(pipelinesFolder)"
+          - task: PublishBuildArtifacts@1
+            inputs:
+              pathToPublish: $(pipelinesFolder)
+              artifactName: $(pipelinesArtifactName)
+
+          - task: CopyFiles@2
+            displayName: Copy Scripts
+            inputs:
+              sourceFolder: "$(Build.SourcesDirectory)/src/platform-automation/artifacts/scripts"
+              contents: "**"
+              targetFolder: "$(scriptsFolder)"
+          - task: PublishBuildArtifacts@1
+            inputs:
+              pathToPublish: $(scriptsFolder)
+              artifactName: $(scriptsArtifactName)
+
+          - task: CopyFiles@2
+            displayName: Copy MG templates
+            inputs:
+              sourceFolder: "$(Build.SourcesDirectory)/src/platform-automation/artifacts/templates/managementgroup"
+              contents: "**"
+              targetFolder: "$(mgTemplatesFolder)"
+          - task: PublishBuildArtifacts@1
+            inputs:
+              pathToPublish: $(mgTemplatesFolder)
+              artifactName: $(mgTemplatesArtifactName)
+
+          - task: CopyFiles@2
+            displayName: Copy RG templates
+            inputs:
+              sourceFolder: "$(Build.SourcesDirectory)/src/platform-automation/artifacts/templates/resourcegroup"
+              contents: "**"
+              targetFolder: "$(rgTemplatesFolder)"
+          - task: PublishBuildArtifacts@1
+            inputs:
+              pathToPublish: $(rgTemplatesFolder)
+              artifactName: $(rgTemplatesArtifactName)
+
+          - task: CopyFiles@2
+            displayName: Copy subscription templates
+            inputs:
+              sourceFolder: "$(Build.SourcesDirectory)/src/platform-automation/artifacts/templates/subscription"
+              contents: "**"
+              targetFolder: "$(subscriptionTemplatesFolder)"
+          - task: PublishBuildArtifacts@1
+            inputs:
+              pathToPublish: $(subscriptionTemplatesFolder)
+              artifactName: $(subscriptionTemplatesArtifactName)
+
+          - task: CopyFiles@2
+            displayName: Copy tenant templates
+            inputs:
+              sourceFolder: "$(Build.SourcesDirectory)/src/platform-automation/artifacts/templates/tenant"
+              contents: "**"
+              targetFolder: "$(tenantTemplatesFolder)"
+          - task: PublishBuildArtifacts@1
+            inputs:
+              pathToPublish: $(tenantTemplatesFolder)
+              artifactName: $(tenantTemplatesArtifactName)
+
+          - task: CopyFiles@2
+            displayName: Copy all templates
+            inputs:
+              sourceFolder: "$(Build.SourcesDirectory)/src/platform-automation/artifacts/templates/tenant"
+              contents: "**"
+              targetFolder: "$(templatesFolder)"
+          - task: PublishBuildArtifacts@1
+            inputs:
+              pathToPublish: $(templatesFolder)
+              artifactName: $(templatesArtifactName)
