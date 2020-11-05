@@ -1,0 +1,22 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "topManagementGroup": {
+      "value": "Fabrikam"      
+    },
+    "topManagementGroupDisplayName":  {
+      "value": "Fabrikam"
+    },
+    
+    "subGroups": {
+      "value": ["Marketing","IT", "HR"]
+    },
+
+    "subGroupsDisplayNames": {
+      "value": ["Marketing","IT", "HR"]
+    }      
+  }
+}
+
+

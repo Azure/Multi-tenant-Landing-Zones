@@ -1,0 +1,27 @@
+name: ARM Tests (arm-ttk)
+on:
+  pull_request:
+    types: [assigned, opened, synchronize, reopened]
+    branches:
+      - master
+  push:
+    branches:
+      - master
+    paths:
+      - src/platform-automation/artifacts/**
+    
+jobs:
+  test_arm_templates:
+    runs-on: ubuntu-latest
+    name: Run ARM TTK tests
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Run ARM Tests
+        uses: ./Actions/Arm-ttk
+        id: action
+        env:
+          TestsToInclude: ''
+          TestsToSkip: ''
+          TemplatesFolder: './src/platform-automation/artifacts/templates/'
+          OutputFilePath: testRuns/results.csv

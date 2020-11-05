@@ -1,0 +1,72 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-08-01/tenantDeploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "topManagementGroup": {
+      "type": "string",
+      "defaultValue": "Contoso.com-Management"      
+    },
+    "topManagementGroupDisplayName":  {
+      "type": "string",
+      "defaultValue": "Contoso.com - Management"
+    },    
+    "subGroups": {
+      "type": "array",
+      "defaultValue": ["Platform","LandingZones", "Sandbox", "Decomissioned"]
+    },
+    "subGroupsDisplayNames": {
+      "type": "array",
+      "defaultValue": ["Platform","Landing Zones", "Sandbox", "Decomissioned"]
+    }      
+  },
+  "variables": {
+
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Management/managementGroups",
+      "apiVersion": "2019-11-01",
+      "name": "[parameters('topManagementGroup')]",
+      "properties": {
+        "displayName": "[parameters('topManagementGroupDisplayName')]"      
+      }
+    },
+    {
+      "copy": {
+        "count": "[length(parameters('subGroups'))]",
+        "name" : "subgroupsCount"      
+      },
+      "type": "Microsoft.Management/managementGroups",
+      "apiVersion": "2019-11-01",
+      
+      "name": "[parameters('subGroups')[copyIndex()]]",
+      "properties": {
+        "displayName": "[parameters('subGroupsDisplayNames')[copyIndex()]]",      
+        "details" : {
+          "parent" : {
+            "id": "[resourceId('Microsoft.Management/managementGroups', parameters('topManagementGroup'))]"
+          }
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Management/managementGroups', parameters('topManagementGroup'))]"
+      ]
+    }
+  ],
+  "outputs": {
+    "topManagementGroupId": {
+      "type": "string",
+      "value": "[resourceId('Microsoft.Management/managementGroups', parameters('topManagementGroup'))]"
+    },
+    "subGroups" : {
+      "type": "array",
+      "copy": {
+        "count": "[length(parameters('subGroups'))]",
+        "input" : {
+          "managementGroupId" : "[resourceId('Microsoft.Management/managementGroups', parameters('subGroups')[copyIndex()])]",
+          "name" : "[parameters('subGroupsDisplayNames')[copyIndex()]]"
+        }
+      }
+    }    
+  }
+}

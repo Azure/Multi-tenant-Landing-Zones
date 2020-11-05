@@ -1,0 +1,23 @@
+name: Customer Platform Validation Tests
+on:
+ push:
+  branches:
+    - master
+  paths:
+      - src/platform-automation/cmdb/customers/*/manifest.json 
+
+defaults: 
+  run:
+    shell: pwsh
+jobs:
+  test_arm_templates:
+    runs-on: ubuntu-latest
+    name: Run artifacts tests for all customers
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Run artifacts test                
+        run: | 
+          Find-Module Pester|Install-Module -Scope CurrentUser -Force
+          Import-module Pester
+          ./src/platform-automation/tests/Artifacts.tests.ps1

@@ -1,0 +1,29 @@
+{
+    "mode": "all",
+    "parameters": {
+        "allowedLocations": {
+            "type": "array",
+            "metadata": {
+                "description": "The list of locations that can be specified when deploying resources",
+                "strongType": "location",
+                "displayName": "Allowed locations"
+            },
+            "defaultValue": [
+                "westus2"
+            ]
+        }
+    },
+    "displayName": "Allowed locations",
+    "description": "This policy enables you to restrict the locations your organization can specify when deploying resources.",
+    "policyRule": {
+        "if": {
+            "not": {
+                "field": "location",
+                "in": "[parameters('allowedLocations')]"
+            }
+        },
+        "then": {
+            "effect": "deny"
+        }
+    }
+}

@@ -1,0 +1,191 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "tags": {
+            "type": "object",
+            "defaultValue": {}
+        },
+        "osType": {
+            "type": "string",
+            "allowedValues": [
+                "Linux",
+                "Windows"
+            ],
+            "defaultValue": "Windows"
+        },
+        "vmSize": {
+            "type": "string",
+            "defaultValue": "Standard_A1",
+            "allowedValues": [
+                "Standard_A1",
+                "Standard_D2_v2",
+                "Standard_D2_v3"
+            ]
+        },
+        "vmName": {
+            "type": "string",
+            "minLength": 1
+        },
+        "adminUsername": {
+            "type": "string",
+            "defaultValue": "contosoadmin",
+            "metadata": {
+                "description": "Admin username on all VMs."
+            }
+        },
+        "subnetId": {
+            "type": "string",
+            "minLength": 10
+        },
+        "nsgRefId": {
+            "type": "string",
+            "minLength": 0,
+            "defaultValue": ""
+        },
+        "publicIPRef": {
+            "type": "string",
+            "minLength": 0,
+            "defaultValue": ""
+        },
+        "adminPassword": {
+            "type": "securestring",
+            "metadata": {
+                "description": "Admin password on all VMs."
+            }
+        }
+    },
+    "variables": {
+        "osTypeWindows": {
+            "publisher": "MicrosoftWindowsServer",
+            "offer": "WindowsServer",
+            "sku": "2016-Datacenter",
+            "version": "latest"
+        },
+        "osTypeLinux": {
+            "publisher": "Canonical",
+            "offer": "UbuntuServer",
+            "sku": "16.04.0-LTS",
+            "version": "latest"
+        },
+        "vmName": "[parameters('vmName')]",
+        "osType": "[if(equals(parameters('osType'), 'Linux'), variables('osTypeLinux'), variables('osTypeWindows'))]",
+        "osProfile": {
+            "computerName": "[variables('vmName')]",
+            "adminUsername": "[parameters('adminUsername')]",
+            "adminPassword": "[parameters('adminPassword')]"
+        },
+        "vmSANName": "[concat(uniqueString(concat(subscription().id, resourceGroup().id,'vmsa')), 'ba')]",
+        "vmOSDiskName": "[concat(variables('vmName'), '_OSDisk')]",
+        "vmIPConfigName": "[concat(variables('vmName'), 'ipconfig')]",
+        "vmNicName": "[concat(variables('vmName'), 'nic')]",
+        "storageAccountType": "Standard_LRS",
+        "ipConfigurationPublicProperties": {
+            "privateIPAllocationMethod": "Dynamic",
+            "publicIPAddress": {
+                "id": "[parameters('publicIPRef')]"
+            },
+            "subnet": {
+                "id": "[parameters('subnetId')]"
+            }
+        },
+        "ipConfigurationPrivateProperties": {
+            "privateIPAllocationMethod": "Dynamic",
+            "subnet": {
+                "id": "[parameters('subnetId')]"
+            }
+        },
+        "ipConfigurationProperties": "[if(greater(length(parameters('publicIPRef')),1), variables('ipConfigurationPublicProperties'), variables('ipConfigurationPrivateProperties'))]",
+        "nicPropertiesWithNSG": {
+            "ipConfigurations": [
+                {
+                    "name": "[variables('vmIPConfigName')]",
+                    "properties": "[variables('ipConfigurationProperties')]"
+                }
+            ],
+            "networkSecurityGroup": {
+                "condition": "[greater(length(parameters('nsgRefId')),5)]",
+                "id": "[parameters('nsgRefId')]"
+            }
+        },
+        "nicPropertiesWithoutNSG": {
+            "ipConfigurations": [
+                {
+                    "name": "[variables('vmIPConfigName')]",
+                    "properties": "[variables('ipConfigurationProperties')]"
+                }
+            ]
+        },
+        "nicProperties": "[if(greater(length(parameters('nsgRefId')),5), variables('nicPropertiesWithNSG'), variables('nicPropertiesWithoutNSG'))]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Network/networkInterfaces",
+            "name": "[variables('vmNicName')]",
+            "location": "[resourceGroup().location]",
+            "apiVersion": "2017-04-01",
+            "properties": "[variables('nicProperties')]",
+            "tags": "[parameters('tags')]"
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts",
+            "name": "[variables('vmSANName')]",
+            "location": "[resourceGroup().location]",
+            "apiVersion": "2015-06-15",
+            "properties": {
+                "accountType": "[variables('storageAccountType')]"
+            },
+            "tags": "[parameters('tags')]"
+        },
+        {
+            "type": "Microsoft.Compute/virtualMachines",
+            "name": "[variables('vmName')]",
+            "location": "[resourceGroup().location]",
+            "apiVersion": "2017-03-30",
+            "dependsOn": [
+                "[concat('Microsoft.Storage/storageAccounts/', variables('vmSANName'))]",
+                "[concat('Microsoft.Network/networkInterfaces/', variables('vmNicName'))]"
+            ],
+            "properties": {
+                "hardwareProfile": {
+                    "vmSize": "[parameters('vmSize')]"
+                },
+                "osProfile": "[variables('osProfile')]",
+                "storageProfile": {
+                    "imageReference": "[variables('osType')]",
+                    "osDisk": {
+                        "name": "[variables('vmOSDiskName')]",
+                        "caching": "ReadWrite",
+                        "createOption": "FromImage"
+                    },
+                    "copy": [
+                        {
+                            "count": 2,
+                            "name": "dataDisks",
+                            "input": {
+                                "diskSizeGB": 1023,
+                                "lun": "[copyIndex('dataDisks')]",
+                                "createOption": "Empty"
+                            }
+                        }
+                    ]
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces',variables('vmNicName'))]"
+                        }
+                    ]
+                },
+                "diagnosticsProfile": {
+                    "bootDiagnostics": {
+                        "enabled": "true",
+                        "storageUri": "[concat('http://',variables('vmSANName'),'.blob.core.windows.net')]"
+                    }
+                }
+            },
+            "tags": "[parameters('tags')]"
+        }
+    ],
+    "outputs": {}
+}

@@ -1,0 +1,27 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-08-01/tenantDeploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "mgName": {
+      "type": "string"
+    },
+    "displayName": {
+      "type": "string",
+      "defaultValue": "Contoso management"
+    }
+  },
+  "variables" : {},
+  "resources": [
+    {
+      "type": "Microsoft.Management/managementGroups",
+      "apiVersion": "2019-11-01",
+      "name": "[parameters('mgName')]",
+      "properties": {      
+        "displayName": "[parameters('displayName')]"            
+      }
+    }
+  ],
+  "outputs": {
+
+  }
+}

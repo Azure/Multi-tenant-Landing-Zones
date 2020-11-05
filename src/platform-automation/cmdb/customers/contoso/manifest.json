@@ -1,0 +1,47 @@
+{
+    "artifacts": {
+        "tenant": {
+            "DefaultMGs": {
+                "name": "ManagementGroups",
+                "version": "1.0"
+            }
+        },
+        "managementGroups": {
+            "WELocationAudit": {
+                "name": "CustomLocationPolicyDefinitions",
+                "version": "1.0",
+                "scope": {
+                    "id": "Contoso.com-Management",
+                    "name": "Contoso.com-Management"
+                }
+            }
+        },
+        "subscriptions": {
+            "ProductionRG": {
+                "name": "ResourceGroup",
+                "version": "1.0"
+            }
+        },
+        "resourceGroups": {
+            "SimpleStorage1": {
+                "name": "StorageAccount",
+                "version": "1.0"
+            },
+            "SimpleStorage2": {
+                "name": "StorageAccount",
+                "version": "1.0"
+            },
+            "EmailGroup": {
+                "name": "action-groups/ActionGroup",
+                "version": "1.0"
+            }
+        },
+        "blueprints": {}
+    },
+    "defaultDeploymentScope": {
+        "tenantId": "<Tenant_ID>",
+        "subscription": "<Subscription_ID>",
+        "location": "west europe",
+        "meta": "Trigger update 1"
+    }
+}

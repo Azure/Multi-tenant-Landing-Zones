@@ -1,0 +1,52 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+     "targetMG": {
+            "type": "string",
+            "metadata": {
+                "description": "Target Management Group"
+            },
+            "defaultValue" : "Platform"
+      }
+  },
+  "variables": {
+     "mgScope": "[tenantResourceId('Microsoft.Management/managementGroups', parameters('targetMG'))]"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Authorization/policyDefinitions",
+      "apiVersion": "2019-01-01",
+      "name": "locationpolicy",
+      "properties": {
+        "policyType": "Custom",
+        "parameters": {
+        },
+        "policyRule": {
+          "if": {
+            "field": "location",
+            "notequals": "westeurope"
+          },
+          "then": {
+            "effect": "audit"
+          }
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Authorization/policyAssignments",
+      "apiVersion": "2019-01-01",
+      "name": "location-lock",
+      "dependsOn": [
+        "locationpolicy"
+      ],
+      "properties": {
+          "scope": "[variables('mgScope')]",
+          "policyDefinitionId": "[extensionResourceId(variables('mgScope'), 'Microsoft.Authorization/policyDefinitions', 'locationpolicy')]"    
+      }
+    }
+  ],
+  "outputs": {
+
+  }
+}

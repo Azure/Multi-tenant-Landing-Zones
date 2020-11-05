@@ -1,0 +1,22 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "topManagementGroup": {
+      "value": "IT"      
+    },
+    "topManagementGroupDisplayName":  {
+      "value": "IT"
+    },
+    
+    "subGroups": {
+      "value": ["Production","Development", "QA"]
+    },
+
+    "subGroupsDisplayNames": {
+      "value": ["Production","Development", "QA"]
+    }      
+  }
+}
+
+

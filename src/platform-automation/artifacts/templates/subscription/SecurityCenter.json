@@ -1,0 +1,17 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.1",
+    "parameters": {},
+    "variables": {},
+    "resources": [
+      {
+        "type": "Microsoft.Security/pricings",
+        "apiVersion": "2018-06-01",
+        "name": "default",
+        "properties": {
+          "pricingTier": "Standard"
+        }
+      }
+    ],
+    "outputs": {}
+  }
