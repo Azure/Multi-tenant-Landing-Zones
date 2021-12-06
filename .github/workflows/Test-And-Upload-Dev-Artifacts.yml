@@ -1,5 +1,7 @@
 name: Dev - Verify and publish artifacts to Azure Storage
 on:
+  workflow_dispatch:
+  
   push:
     branches-ignore:
       - master
