@@ -1,9 +1,9 @@
 name: Customer deployment Fabrikam
 on:   
-  pull_request:
-    types: [closed]
+   push:
     branches:
-      - master
+      - main
+      - fabrikam*
     paths:
       - src/platform-automation/cmdb/customers/fabrikam/*
 
