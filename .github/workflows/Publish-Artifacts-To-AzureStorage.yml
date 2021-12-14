@@ -1,11 +1,16 @@
 name: Production - Verify and publish artifacts to Azure Storage
 on:
-  pull_request:
-    types: [closed]
-    branches:
-      - master
-    paths:
-      - src/platform-automation/artifacts/**
+  push:
+    branches: 
+      - main
+      - fabrikam*
+  
+  #pull_request:
+  #  types: [closed]
+  #  branches:
+  #    - master
+  #  paths:
+  #    - src/platform-automation/artifacts/**
 
 defaults: 
   run:
