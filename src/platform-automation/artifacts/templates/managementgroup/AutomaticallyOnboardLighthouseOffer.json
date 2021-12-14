@@ -34,7 +34,7 @@
     "resources": [
         {
             "type": "Microsoft.Authorization/policyDefinitions",
-            "apiVersion": "2019-09-01",
+            "apiVersion": "2021-06-01",
             "name": "[variables('policyDefinitionName')]",
             "properties": {
                 "description": "Policy to enforce Lighthouse on subscriptions, delegating mgmt to MSP",

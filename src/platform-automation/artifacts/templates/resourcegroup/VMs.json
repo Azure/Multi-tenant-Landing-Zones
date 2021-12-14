@@ -141,7 +141,7 @@
             "type": "Microsoft.Compute/virtualMachines",
             "name": "[variables('vmName')]",
             "location": "[resourceGroup().location]",
-            "apiVersion": "2017-03-30",
+            "apiVersion": "2021-07-01",
             "dependsOn": [
                 "[concat('Microsoft.Storage/storageAccounts/', variables('vmSANName'))]",
                 "[concat('Microsoft.Network/networkInterfaces/', variables('vmNicName'))]"

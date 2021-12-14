@@ -25,7 +25,7 @@
   "resources": [
     {
       "type": "Microsoft.Management/managementGroups",
-      "apiVersion": "2019-11-01",
+      "apiVersion": "2021-04-01",
       "name": "[parameters('topManagementGroup')]",
       "properties": {
         "displayName": "[parameters('topManagementGroupDisplayName')]"      
@@ -37,7 +37,7 @@
         "name" : "subgroupsCount"      
       },
       "type": "Microsoft.Management/managementGroups",
-      "apiVersion": "2019-11-01",
+      "apiVersion": "2021-04-01",
       
       "name": "[parameters('subGroups')[copyIndex()]]",
       "properties": {

@@ -24,7 +24,7 @@
   "resources": [   
      {
       "type": "Microsoft.Management/managementGroups",
-      "apiVersion": "2019-11-01",
+      "apiVersion": "2021-04-01",
       "name": "[parameters('managementGroup')]",      
       "properties": {
         
@@ -32,7 +32,7 @@
       "resources": [
         {
           "type": "subscriptions",
-          "apiVersion" : "2019-11-01",
+          "apiVersion" : "2021-04-01",
           "id": "[concat(resourceId('Microsoft.Management/managementGroups', parameters('managementGroup')), '/subscriptions/', parameters('subscriptionId'))]",
           "name" : "[parameters('subscriptionId')]",                    
           "properties": {
