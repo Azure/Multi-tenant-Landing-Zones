@@ -10,6 +10,10 @@
             "dataCollectionRg": {
                 "name": "ResourceGroup",
                 "version":"1.0"
+            },
+            "arcServersRg": {
+                "name": "ResourceGroup",
+                "version":"1.0"
             }
         },
 
