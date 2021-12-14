@@ -2,7 +2,7 @@ name: Dev - Verify and publish artifacts to Azure Storage
 on:
   push:
     branches-ignore:
-      - master
+      - main
     paths:
       - src/platform-automation/artifacts/**
 

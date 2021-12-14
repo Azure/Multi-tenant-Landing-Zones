@@ -2,7 +2,7 @@ name: Manage CSP Customer subscriptions
 on:       
     push:
       branches:
-          - master
+          - main
       paths:
           - src/platform-automation/cmdb/customers/**/new_subscription
           - src/platform-automation/cmdb/customers/**/delete_subscription
