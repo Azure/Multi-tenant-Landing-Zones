@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - src/platform-automation/cmdb/customers/cloudpuzzles/*
+      - src/platform-automation/cmdb/customers/cloudpuzzles/**
 
 env:
   storageAccountName: ${{ secrets.AZURE_STORAGE_ACCOUNT_PROD }}

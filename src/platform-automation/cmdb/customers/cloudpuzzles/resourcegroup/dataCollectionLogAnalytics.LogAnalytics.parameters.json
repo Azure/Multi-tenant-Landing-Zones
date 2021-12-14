@@ -6,7 +6,7 @@
             "value": "sim-prod-monitordata"
         },
         "data-retention": {
-            "value": 365        
+            "value": 364        
         },
         "sku":{
             "value": "pergb2018"
