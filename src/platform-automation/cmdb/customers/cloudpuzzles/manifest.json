@@ -6,6 +6,10 @@
             "alertQualifierRg": {
                 "name": "ResourceGroup",
                 "version": "1.0"
+            },
+            "dataCollectionRg": {
+                "name": "ResourceGroup",
+                "version":"1.0"
             }
         },
 
@@ -16,7 +20,15 @@
                 "scope":{
                     "name" : "prod-sim-alertqualifier"
                 }
+            },
+            "dataCollectionLogAnalytics": {
+                "name": "LogAnalytics",
+                "version": "1.0",
+                "scope": {
+                    "name": "prod-sim-monitordata"
+                }
             }
+            
         },
         "blueprints": {}
     },
