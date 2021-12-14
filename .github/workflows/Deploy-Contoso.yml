@@ -9,7 +9,7 @@ on:
 
 env:
   storageAccountName: ${{ secrets.AZURE_STORAGE_ACCOUNT_PROD }}
-  storageAccountKey: ${{ secrets. AZURE_DEPLOYMENT_STORAGE_SAS_PROD }}
+  storageAccountKey: ${{ secrets.AZURE_DEPLOYMENT_STORAGE_SAS_PROD }}
   customerDeploymentCredential: ${{ secrets.AZURE_CONTOSO_CREDENTIAL }}
 
 defaults: 
