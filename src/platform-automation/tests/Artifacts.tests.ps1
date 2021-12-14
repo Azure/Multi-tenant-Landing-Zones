@@ -21,7 +21,7 @@ $manifest | Foreach-Object {
             }
 
             It 'Is a valid JSON file' {
-                $manifestJson | ConvertFrom-Json -ErrorAction SilentlyContinue | Should Not -Be $Null
+                $manifestJson | ConvertFrom-Json -ErrorAction SilentlyContinue | Should -Not -Be $Null
             }
         }
         # Context 'File Content Validation' {
