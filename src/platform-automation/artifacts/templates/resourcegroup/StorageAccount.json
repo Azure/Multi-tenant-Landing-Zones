@@ -62,7 +62,7 @@
         },
         "masterKey" : {
             "type": "string",
-            "value": "[listKeys(variables('storageAccountName'), '2019-04-01').keys[0].value]"
+            "value": "[listKeys(variables('storageAccountName'), '2021-08-01').keys[0].value]"
         }
     }
 }
