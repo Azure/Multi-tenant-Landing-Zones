@@ -5,7 +5,7 @@
         "workspaceName": {
             "value": "sim-prod-monitordata"
         },
-        "dataRetention": {
+        "data-retention": {
             "value": 365        
         },
         "sku":{
