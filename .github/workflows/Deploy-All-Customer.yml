@@ -3,7 +3,7 @@ on:
   pull_request:
     types: [closed]
     branches:
-      - master
+      - main
     paths:
       - src/platform-automation/customers/**
 
@@ -12,7 +12,7 @@ defaults:
     shell: pwsh
 env:
   storageAccountName:  ${{ secrets.AZURE_STORAGE_ACCOUNT_PROD }}
-  storageAccountKey: ${{ secrets. AZURE_DEPLOYMENT_STORAGE_SAS_PROD }}
+  storageAccountKey: ${{ secrets.AZURE_DEPLOYMENT_STORAGE_SAS_PROD }}
   lighthouseDeploymentCredential: ${{ secrets.AZURE_SUBSCRIPTION_CREDENTIAL }}
 
 jobs:

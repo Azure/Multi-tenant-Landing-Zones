@@ -3,18 +3,18 @@
         "tenant": {},
         "managementGroups": {},
         "subscriptions": {
-            "ProductionRG": {
+            "alertQualifierRg": {
                 "name": "ResourceGroup",
                 "version": "1.0"
             }
         },
 
         "resourceGroups": {
-            "SimpleStorage1": {
+            "alertQualifierStg": {
                 "name": "StorageAccount",
                 "version": "1.0",
                 "scope":{
-                    "name" : "prod-github-actions"
+                    "name" : "prod-sim-alertqualifier"
                 }
             }
         },

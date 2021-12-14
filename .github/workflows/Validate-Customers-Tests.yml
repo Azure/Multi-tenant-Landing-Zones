@@ -2,7 +2,7 @@ name: Customer Platform Validation Tests
 on:
  push:
   branches:
-    - master
+    - main
   paths:
       - src/platform-automation/cmdb/customers/*/manifest.json 
 

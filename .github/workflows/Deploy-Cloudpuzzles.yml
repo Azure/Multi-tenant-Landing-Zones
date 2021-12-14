@@ -1,15 +1,16 @@
-name: Customer deployment Fabrikam
+name: Customer deployment Cloudpuzzles
 on:   
-   push:
+  pull_request:
+    types: [closed]
     branches:
-      - fabrikam*
+      - main
     paths:
-      - src/platform-automation/cmdb/customers/fabrikam/*
+      - src/platform-automation/cmdb/customers/cloudpuzzles/*
 
 env:
   storageAccountName: ${{ secrets.AZURE_STORAGE_ACCOUNT_PROD }}
   storageAccountKey: ${{ secrets.AZURE_DEPLOYMENT_STORAGE_SAS_PROD }}
-  customerDeploymentCredential: ${{ secrets.AZURE_FABRIKAM_CREDENTIAL }}
+  customerDeploymentCredential: ${{ secrets.AZURE_CLOUDPUZZLES_CREDENTIAL }}
 
 defaults: 
   run:
@@ -17,7 +18,7 @@ defaults:
           
 jobs:
   deploy-customer:
-    name: Deploy Fabrikam with all it's glory
+    name: Deploy Cloudpuzzles with all it's glory
     runs-on: ubuntu-latest
     # if: github.event.pull_request.merged == true
     steps:
@@ -32,5 +33,5 @@ jobs:
         creds: ${{env.customerDeploymentCredential}} 
         enable-AzPSSession: true 
     - name: Run deployment with verbose output
-      run: ./src/platform-automation/platform-scripts/Deploy-Customer.ps1 -customer "fabrikam"  -storageAccountName '${{ env.storageAccountName }}' -storageAccountKey '${{ env.storageAccountKey }}' -verbose         
+      run: ./src/platform-automation/platform-scripts/Deploy-Customer.ps1 -customer "cloudpuzzles"  -storageAccountName '${{ env.storageAccountName }}' -storageAccountKey '${{ env.storageAccountKey }}' -verbose         
       

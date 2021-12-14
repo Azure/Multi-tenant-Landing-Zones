@@ -20,10 +20,10 @@ $files|Foreach-Object {
     Describe "[$testName] template validation" {
         Context 'File Validation' {
             It 'Template ARM File Exists' {
-                Test-Path $TemplatePath -Include '*.json' | Should Be $true
+                Test-Path $TemplatePath -Include '*.json' | Should -Be $true
             }
             It 'Is a valid JSON file' {
-                $templateARM | ConvertFrom-Json -ErrorAction SilentlyContinue | Should Not Be $Null
+                $templateARM | ConvertFrom-Json -ErrorAction SilentlyContinue | Should Not -Be $Null
             }
         }
         Context 'Template Content Validation' {
@@ -36,7 +36,7 @@ $files|Foreach-Object {
                             'parameters',
                             'resources'|Sort-object                                
                 $templateProperties = $template | Get-Member -MemberType NoteProperty | ForEach-Object Name|Sort-object
-                $templateProperties | Should Be $Elements
+                $templateProperties | Should -Be $Elements
             }
             <#
             It "Creates the expected resources" {

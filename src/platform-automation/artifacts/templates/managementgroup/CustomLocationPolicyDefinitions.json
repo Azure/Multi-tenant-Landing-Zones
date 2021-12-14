@@ -10,7 +10,7 @@
   "resources": [
     {
       "type": "Microsoft.Authorization/policyDefinitions",
-      "apiVersion": "2019-01-01",
+      "apiVersion": "2021-06-01",
       "name": "locationpolicy",
       "properties": {
         "policyType": "Custom",

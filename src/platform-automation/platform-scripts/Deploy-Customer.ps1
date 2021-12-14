@@ -1,4 +1,5 @@
 #Requires -Modules @{ModuleName="Az.Resources";ModuleVersion="2.2.0"}  
+#Requires -Modules @{ModuleName="Az.Storage";ModuleVersion="2.2.0"} 
 #Requires -Modules @{ModuleName="Az.Blueprint";ModuleVersion="0.2.10"}  
 [cmdletbinding()]
 param(      
