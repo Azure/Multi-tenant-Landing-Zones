@@ -1,15 +1,6 @@
 {
     "artifacts": {
-        "tenant": {
-            "BU": {
-                "name": "ManagementGroups",
-                "version": "1.0"
-            },
-            "IT": {
-                "name": "ManagementGroups",
-                "version": "1.0"
-            }
-        },
+        "tenant": {},
         "managementGroups": {},
         "subscriptions": {
             "ProductionRG": {
