@@ -14,7 +14,7 @@
                 "name": "StorageAccount",
                 "version": "1.0",
                 "scope":{
-                    "name" : "NS"
+                    "name" : "ProductionRG"
                 }
             }
         },
