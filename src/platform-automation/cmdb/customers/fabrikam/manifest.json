@@ -11,10 +11,26 @@
             }
         },
         "managementGroups": {},
-        "subscriptions": {},
-        "resourceGroups": {},
+        "subscriptions": {
+            "ProductionRG": {
+                "name": "ResourceGroup",
+                "version": "1.0"
+            }
+        },
+
+        "resourceGroups": {
+            "SimpleStorage1": {
+                "name": "StorageAccount",
+                "version": "1.0",
+                "scope":{
+                    "name" : "NS"
+                }
+            }
+        },
         "blueprints": {}
     },
+
+    
 
     "defaultDeploymentScope": {
         "tenantId": "9b00ed4f-da1e-4ee4-beec-09a4ee32ad31",
