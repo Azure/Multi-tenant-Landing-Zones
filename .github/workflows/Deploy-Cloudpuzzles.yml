@@ -1,0 +1,37 @@
+name: Customer deployment Cloudpuzzles
+on:   
+  pull_request:
+    types: [closed]
+    branches:
+      - main
+    paths:
+      - src/platform-automation/cmdb/customers/cloudpuzzles/*
+
+env:
+  storageAccountName: ${{ secrets.AZURE_STORAGE_ACCOUNT_PROD }}
+  storageAccountKey: ${{ secrets.AZURE_DEPLOYMENT_STORAGE_SAS_PROD }}
+  customerDeploymentCredential: ${{ secrets.AZURE_CLOUDPUZZLES_CREDENTIAL }}
+
+defaults: 
+  run:
+    shell: pwsh
+          
+jobs:
+  deploy-customer:
+    name: Deploy Cloudpuzzles with all it's glory
+    runs-on: ubuntu-latest
+    # if: github.event.pull_request.merged == true
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1   
+    - name: Install modules
+      run: ./src/platform-automation/platform-scripts/Install-Required-Modules.ps1 -verbose            
+    - name: Azure Login
+      uses: Azure/login@v1
+      with:
+        # Paste output of `az ad sp create-for-rbac` as value of secret variable: AZURE_CREDENTIALS
+        creds: ${{env.customerDeploymentCredential}} 
+        enable-AzPSSession: true 
+    - name: Run deployment with verbose output
+      run: ./src/platform-automation/platform-scripts/Deploy-Customer.ps1 -customer "cloudpuzzles"  -storageAccountName '${{ env.storageAccountName }}' -storageAccountKey '${{ env.storageAccountKey }}' -verbose         
+      
