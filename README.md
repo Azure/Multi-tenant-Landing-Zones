@@ -5,7 +5,7 @@ In the meantime, please feel free to share feedback on the work-in-progress deve
 
 # Narrative
 
-Some companies have the need for multiple landing zones; support different lisencing models (EA, PAYG, CSP) and build, support and operate these landing zones across multiple tenants. This is especially important for partners where different delivery models account for a big deal of their business or enterprises that run seperated businesses within their enterprise and still require control and standardization.
+Some companies have the need for multiple landing zones; support different licensing models (EA, PAYG, CSP) and build, support and operate these landing zones across multiple tenants. This is especially important for partners where different delivery models account for a big deal of their business or enterprises that run seperated businesses within their enterprise and still require control and standardization.
 
 This solution is not opinionated on the architecture you choose to deliver or how to. If we look at Enterprise Scale - this would be one out of many landing zones a company would support and be able to deliver at scale.
 
